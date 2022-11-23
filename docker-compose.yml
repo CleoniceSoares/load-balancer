@@ -1,0 +1,26 @@
+version: '3'
+services:    
+  loadbalancer: 
+    image: nginx:1.23.1-alpine
+    container_name: loadbalancer
+    ports:
+      - "8000:80"
+  node1:
+    image: nginx:1.23.1-alpine
+    container_name: node1
+    volumes:
+      - /home/laced-tsi-05/load-balancer/build:/usr/share/nginx/html
+    ports:
+      - "80"
+  node2:
+    image: nginx:1.23.1-alpine
+    container_name: node2
+    volumes:
+      - /home/laced-tsi-05/load-balancer/build:/usr/share/nginx/html
+    ports:
+      - "80"
+  node3:
+    image: httpd:2.4.54-alpine
+    container_name: node3
+    ports:
+     - "80"
