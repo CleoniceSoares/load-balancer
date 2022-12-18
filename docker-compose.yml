@@ -3,6 +3,8 @@ services:
   loadbalancer: 
     image: nginx:1.23.1-alpine
     container_name: loadbalancer
+    volumes:
+      - .default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "8000:80"
   node1:
@@ -20,7 +22,16 @@ services:
     ports:
       - "80"
   node3:
-    image: httpd:2.4.54-alpine
+    image: nginx:1.23.1-alpine
     container_name: node3
+    volumes:
+      - /home/laced-tsi-05/load-balancer/build:/usr/share/nginx/html
     ports:
-     - "80"
+      - "80"
+  json-server:
+    image: codfish/json-server
+    comand: npm run dev
+    volumes:
+      - ./json-server/db.js:/app/db.js
+      - ./json-server/routes.json:/app/routes.json:delegated
+      - ./json-server/middleware.js:/app/middleware.js:delegated
